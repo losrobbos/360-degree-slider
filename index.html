@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>360 degree Slider</title>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/Flip.min.js"></script>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      perspective: 1000px;
+      display: grid;
+      place-items: center;
+      min-height: 100vh;
+      margin: 0;
+    }
+
+    main {
+      /* border: 1px solid black;  */
+      width: 300px;
+      height: 300px;
+      position: relative;
+      transform-style: preserve-3d;
+      transition: 1s;
+      /* animation: spin 5s linear forwards; */
+    }
+
+    @keyframes spin {
+      to {
+        rotate: y 270deg;
+      }
+    }
+
+    div {
+      width: 100%;
+      height: calc(100%/3);
+      border: 2px solid red;
+      display: grid;
+      place-items: center;
+      position: absolute;
+      left: 0;
+      transform-style: preserve-3d;
+      opacity: 0.9;
+      font-size: 3rem;
+    }
+
+    div:nth-of-type(2n) {
+      background-color: greenyellow;
+    }
+
+    div:nth-of-type(2n+1) {
+      background-color: saddlebrown;
+    }
+
+    button {
+      position: absolute;
+      left: 50%;
+      translate: -50% 0;
+      background-color: black;
+      padding: 5px 20px;
+      cursor: pointer;
+      z-index: 100;
+    }
+
+    button.up {
+      top: 0;
+    }
+
+    button.down {
+      bottom: 0;
+    }
+  </style>
+</head>
+
+<body>
+
+  <button class="up">👆</button>
+  <button class="down">👇</button>
+
+  <main>
+    <div>1</div>
+    <div>2</div>
+    <div>3</div>
+    <div>4</div>
+    <div>5</div>
+    <div>6</div>
+  </main>
+
+  <script>
+    gsap.registerPlugin(Flip);
+
+    const applyTransforms = (cards, cardTransforms) => {
+      cards.forEach((card, i) => {
+        const translate = [0, 0, 0]
+        let rot = 0
+
+        // set top / vertical position
+        if (i === 0 || i === 3) translate[1] = "100px";
+        if (i === 1 || i === 2) translate[1] = 0;
+        if (i === 4 || i === 5) translate[1] = "200px";
+
+        // depth z position
+        if (i === 0) translate[2] = "150px"
+        if (i === 3) translate[2] = "-150px"
+        if (i === 1 || i === 5) translate[2] = "75px"
+        if (i === 2 || i === 4) translate[2] = "-75px"
+
+        switch (i) {
+          case 0: rot = 0; break;
+          case 1: rot = "60deg"; break;
+          case 2: rot = "120deg"; break;
+          case 3: rot = "180deg"; break;
+          case 4: rot = "240deg"; break;
+          case 5: rot = "300deg"; break;
+        }
+
+        card.style.translate = translate.join(" ")
+        card.style.rotate = "x " + rot
+        // card.style.translate = `0 ${cardTransforms[i].pos.y}px ${cardTransforms[i].pos.z}px`
+        // card.style.rotate = `x ${cardTransforms[i].rotX}deg`;
+        // card.style.transform = `
+        //   translate3d(-50%, ${cardTransforms[i].pos.y}px, ${cardTransforms[i].pos.z}px) 
+        //   rotateX(${cardTransforms[i].rotX}deg)`
+      })
+    }
+
+    const container = document.querySelector("main")
+    const cards = document.querySelectorAll("main > div")
+    const btnUp = document.querySelector(".up")
+    const btnDown = document.querySelector(".down")
+
+    applyTransforms(cards)
+
+    let rotLast = 0;
+
+    const rotateContainer = (dir = 1) => {
+      //      rotLast = rotLast === 0 ? rotLast + dir*45 : rotLast + dir*72;
+      rotLast += dir * 60
+      container.style.rotate = "x " + rotLast + "deg"
+    }
+    btnUp.onclick = () => {
+      rotateContainer(-1)
+    }
+    btnDown.onclick = () => {
+      rotateContainer(1)
+    }
+
+  </script>
+
+</body>
+
+</html>
