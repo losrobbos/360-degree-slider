@@ -30,9 +30,10 @@
       /* animation: spin 5s linear forwards; */
     }
 
+    /* animation for testing slider */
     @keyframes spin {
       to {
-        rotate: y 270deg;
+        rotate: x 360deg;
       }
     }
 
@@ -110,22 +111,11 @@
         if (i === 1 || i === 5) translate[2] = "75px"
         if (i === 2 || i === 4) translate[2] = "-75px"
 
-        switch (i) {
-          case 0: rot = 0; break;
-          case 1: rot = "60deg"; break;
-          case 2: rot = "120deg"; break;
-          case 3: rot = "180deg"; break;
-          case 4: rot = "240deg"; break;
-          case 5: rot = "300deg"; break;
-        }
+        // determine rotation
+        rot = (i * 60) + "deg";
 
         card.style.translate = translate.join(" ")
         card.style.rotate = "x " + rot
-        // card.style.translate = `0 ${cardTransforms[i].pos.y}px ${cardTransforms[i].pos.z}px`
-        // card.style.rotate = `x ${cardTransforms[i].rotX}deg`;
-        // card.style.transform = `
-        //   translate3d(-50%, ${cardTransforms[i].pos.y}px, ${cardTransforms[i].pos.z}px) 
-        //   rotateX(${cardTransforms[i].rotX}deg)`
       })
     }
 
@@ -134,12 +124,12 @@
     const btnUp = document.querySelector(".up")
     const btnDown = document.querySelector(".down")
 
+    // bringt cards into initial position
     applyTransforms(cards)
 
+    // rotate container on button click
     let rotLast = 0;
-
     const rotateContainer = (dir = 1) => {
-      //      rotLast = rotLast === 0 ? rotLast + dir*45 : rotLast + dir*72;
       rotLast += dir * 60
       container.style.rotate = "x " + rotLast + "deg"
     }
