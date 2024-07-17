@@ -1,0 +1,12 @@
+{
+  "name": "129-rotate-3d",
+  "version": "1.0.0",
+  "description": "Demo: https://360-degree-slider.vercel.app",
+  "main": "index.js",
+  "scripts": {
+    "deploy": "vercel --prod"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
